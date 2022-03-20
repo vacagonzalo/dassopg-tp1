@@ -25,9 +25,9 @@ class Parser():
                 if self.valid_syntax(clean_line):
                     data = clean_line.split(',')
                     coin = {'id': data[0],
-                            'value1': data[1],
-                            'value2': data[2],
-                            'name': data[3]}
+                            'value1': data[2],
+                            'value2': data[3],
+                            'name': data[1]}
                     msg.append(coin)
         return to_json(msg)
 

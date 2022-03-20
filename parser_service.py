@@ -38,16 +38,15 @@ def signal_handler(signum, frame):
 
 
 def main():
-    print("Ingrese el camino y nombre del archivo")
-    file_name = input("> ")
+    config = dict()
+    with open('config.txt', 'r') as config_file:
+        for line in config_file:
+            c = line.strip().split('=')
+            key = c[0]
+            val = c[1]
+            config[key] = val
 
-    print("Ingrese el host del servicio pizarra")
-    host = input("> ")
-
-    print("Ingrese el puerto del servicio pizarra")
-    port = input("> ")
-
-    parser = Parser(file_name)
+    parser = Parser(config['file_path'] + config['file_name'])
 
     while True:
         print(parser.parse())

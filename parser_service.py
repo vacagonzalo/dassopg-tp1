@@ -51,7 +51,7 @@ def main():
 
     while True:
         print(parser.parse())
-        sleep(1)
+        sleep(30)
 
 
 if __name__ == "__main__":

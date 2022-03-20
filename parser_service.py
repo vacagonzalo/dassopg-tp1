@@ -1,9 +1,10 @@
 #!bin/python
-import signal
-import os
-from re import search
-from time import sleep
 from json import dumps as to_json
+from re import search
+from socket import socket, AF_INET, SOCK_DGRAM
+from time import sleep
+import os
+import signal
 
 
 class Parser():
@@ -32,6 +33,16 @@ class Parser():
         return to_json(msg)
 
 
+class Publisher():
+    def __init__(self):
+        self.ip = "localhost"
+        self.port = 10000
+
+    def publish(self, msg: str):
+        with socket(AF_INET, SOCK_DGRAM) as s:
+            s.sendto(bytes(msg, "utf-8"), (self.ip, self.port))
+
+
 def signal_handler(signum, frame):
     print('Signal handler called with signal', signum)
     raise OSError("Program ended by external signal")
@@ -47,9 +58,12 @@ def main():
             config[key] = val
 
     parser = Parser(config['file_path'] + config['file_name'])
+    publisher = Publisher()
 
     while True:
-        print(parser.parse())
+        msg = parser.parse()
+        print(msg)
+        publisher.publish(msg)
         sleep(30)
 
 
